@@ -1,0 +1,29 @@
+# Render blueprint for the Kovai Finserv RAG API.
+#
+# The Streamlit UI is NOT here — it deploys separately to Streamlit Community
+# Cloud and talks to this service over HTTP.
+
+services:
+  - type: web
+    name: kovai-rag
+    runtime: docker
+    plan: free
+    # Coimbatore is the customer base; Singapore is the nearest Render region.
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    # Render polls this to decide whether a deploy is live. It must be a path
+    # that answers without calling Claude — /health does no retrieval and
+    # spends no tokens.
+    healthCheckPath: /health
+
+    envVars:
+      # sync: false means "prompt me for this in the dashboard and keep it
+      # secret". The value is never written into this file, so it never
+      # reaches git — which is the entire point, because this file IS
+      # committed. Render stores it and injects it as an environment variable
+      # at runtime.
+      - key: ANTHROPIC_API_KEY
+        sync: false
+
+      - key: LOG_LEVEL
+        value: INFO

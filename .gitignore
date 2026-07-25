@@ -1,0 +1,12 @@
+# These two lines are what stop an API key from reaching GitHub.
+.env
+ui/.streamlit/secrets.toml
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+chroma_db/
+eval/results/
+.vscode/
+.DS_Store

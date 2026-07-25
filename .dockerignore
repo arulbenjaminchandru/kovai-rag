@@ -1,0 +1,37 @@
+# Everything here is kept out of the build context, so it can never be copied
+# into the image by accident and never has to be uploaded to the builder.
+
+# Local virtualenvs — Linux wheels are installed fresh in the builder stage.
+.venv/
+
+__pycache__/
+*.pyc
+.pytest_cache/
+
+.git/
+.github/
+
+# The real API key. It reaches the container as an environment variable set by
+# the platform, never as a file baked into a layer.
+.env
+
+# The Streamlit UI deploys separately and must never be inside the API image.
+ui/
+
+# eval/ is the single biggest size decision in this project. The Ragas stack
+# pulls in sentence-transformers, which pulls in PyTorch — well over 2 GB on
+# its own. Excluding this directory is what keeps the image at ~780 MB instead
+# of over 3 GB, which is the difference between deploying on a free tier and
+# not deploying at all.
+eval/
+
+# Tests run in CI, not in production.
+tests/
+
+# The index is rebuilt inside the image by scripts/ingest.py. Copying a local
+# one in would ship whatever happened to be on the developer's machine.
+chroma_db/
+
+*.ipynb
+.vscode/
+.DS_Store

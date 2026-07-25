@@ -1,0 +1,16 @@
+-r requirements.txt
+
+ragas==0.4.3
+
+# ragas 0.4.3 declares its LangChain dependencies with NO upper bounds, and
+# LangChain 1.x removed langchain_community.chat_models.vertexai which ragas
+# still imports, so a plain `pip install ragas` produces a package that fails
+# on `import ragas`. Pin all four LangChain packages below 1.0 to keep ragas
+# importable.
+langchain<1.0
+langchain-core<1.0
+langchain-community<0.4
+langchain-openai<1.0
+
+sentence-transformers==5.6.1
+pytest==9.1.1
